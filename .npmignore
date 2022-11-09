@@ -1,0 +1,7 @@
+node_modules
+.vscode
+.gitatributes
+.gitignore
+index.html
+src/videos
+src/data

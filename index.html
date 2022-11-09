@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="ad.size" content="width=300,height=250">
+    <title>Video template</title>
+    <style>
+        .body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            border: 1px solid black;
+        }
+        .fullscreen {
+            position: absolute;
+            top: 0; left: 0;
+            width: 300px; height: 250px;
+        }
+        .content, .copy1 {
+            opacity: 0;
+        }
+        video {
+            position: absolute;
+            top: 0; left: 0;
+            width: 300px; height: 250px;
+        }
+        .copy1 {
+            position: absolute;
+            top: -20px; left: 10px;
+            color: #ffffff;
+            font-family: Helvetica, sans-serif;
+            font-size: 16px; font-weight: 500;
+            /* text-align: center;
+            width: 100%; */
+
+        }
+    </style>
+    <link rel="stylesheet" href="./src/css/video.css">
+</head>
+<body>
+
+    <div class="banner fullscreen">
+        <div class="content fullscreen">
+            <!-- Video element, Always tagged with if="video" and "mute=true" -->
+            <video id="video" muted autoplay>
+                <source src="./src/videos/display_logo_video.mp4" type="video/mp4" />
+            </video>
+
+            <!-- Example of the rest of the content -->
+            <div class="content-example fullscreen">
+                <div class="copy1">Animated Text</div>
+            </div>
+        </div>
+        <div class="mainExit fullscreen"></div>
+    </div>
+
+    <!-- Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+    <script type="module">
+        'use strict';
+        import Video from './Video.js';
+
+        const urlLocation = './src/data/data.json';
+
+        const getData = async ( url ) => {
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                return data;
+            } catch (error) {
+                throw(error)
+            }
+        }
+
+        const showMessage = (msj) => {
+            console.log(msj);
+        }
+
+        // const setAnimation = (timeline) => {
+        //     let tl = gsap.timeline();
+        //     tl.to('.copy1', {duration: 1, opacity: 1, ease: Back.easeOut })
+        //     timeline.add(tl)
+        // }
+
+        const mainAnimation = (timeline) => {
+            let tl = gsap.timeline();
+            tl.to('.content', { duration: 0.3, opacity: 1, ease: Power1.easeOut })
+              .to('.copy1', { duration: 0.6, opacity: 1, y: 30, ease: Back.easeOut }, '>+=1')
+            return tl
+        }
+
+        const init = async (data, animation, videoSettings) => {
+            
+            let { banner, cont, videoConfig } = videoSettings;
+            let fetchData = await data(urlLocation);
+            showMessage(fetchData);
+            const videoUi = new Video(banner, cont, fetchData, videoConfig)
+            videoUi.videoControls()
+            
+            
+            //Optional settings
+            let tl = animation()
+            tl.pause()
+
+            //Controls hidden
+            banner.addEventListener('videoPlaying', () => {
+                banner.addEventListener('mouseover', videoUi.mouseOver);
+                banner.addEventListener('mouseout', videoUi.mouseOut);
+                tl.progress(0)
+                tl.play()
+            })
+            banner.addEventListener('videoEnded', () => {
+                banner.removeEventListener('mouseover', videoUi.mouseOver);
+                banner.removeEventListener('mouseout', videoUi.mouseOut);
+                gsap.to('.controls', { duration: 1, opacity: 1 })
+            })
+            //Animation on specific time
+            // videoUi.onVideoTime(animation, tl, 9)
+        }
+
+        const banner = document.body.querySelector('.banner');
+        const container = document.body.querySelector('.content');
+        const videoSettings = { 
+                    banner: banner,
+                    cont: container,
+                    videoConfig: { 
+                        completeVolume: true,
+                        initialVolume: 40,
+                        vertical: false 
+                     }
+                }
+        window.onload = () => {
+            init(getData, mainAnimation, videoSettings)
+        }
+        
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,154 @@
+:root {
+    --icon-size: 36px;
+    --height: 250px;
+    --width: 300px;
+    --bg-gradient: linear-gradient(0deg, rgba(0,0,0,70) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0) 100%);
+    --color-black: #000000;
+    --color-gray: #707070;
+    --color-white: #ffffff;
+}
+#video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--width);
+    height: var(--height);
+}
+
+.controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: var(--width);
+    height: var(--icon-size);
+    z-index: 99;
+    background: var(--bg-gradient);
+    /* opacity: 0; */
+}
+
+#playPauseBtn,
+#soundBtn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    margin: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+#soundBtn {
+    left: var(--icon-size);
+}
+#playPauseBtn img,
+#soundBtn img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--icon-size);
+}
+
+/*
+    COMPLETE VOLUME
+*/
+.complete-volume #soundBtn {
+    width: clamp(80px,100%,140px);
+}
+.complete-volume #volRange {
+    width: clamp(80px, 100%, 70px);
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(var(--icon-size) + 4px);
+    margin: 0;
+}
+.complete-volume input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+}
+.complete-volume input[type=range]:focus {
+    outline: none;
+}
+.complete-volume input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    background: var(--color-gray);
+    border-radius: 3px;
+}
+.complete-volume input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px var(--color-black);
+    background: var(--color-gray);
+    border-radius: 3px;
+    border: 0px solid var(--color-black);
+}
+.complete-volume input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px var(--color-black);
+    border: 0px solid var(--color-black);
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+    background: var(--color-white);
+    cursor: pointer;
+}
+.complete-volume input[type=range]:focus::-ms-fill-lower {
+    background: var(--color-gray);
+}
+.complete-volume input[type=range]:focus::-ms-fill-upper {
+    background: var(--color-gray);
+}
+.complete-volume input[type=range]::-webkit-slider-thumb {
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+    background: var(--color-white);
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -5px;
+}
+.complete-volume #mute_2 {
+    position: absolute;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+/* 
+    VERTICAL
+*/
+.vertical .controls #soundBtn {
+    position: absolute;
+    right: 8px;
+    top: initial;
+    bottom: 0;
+    height: 110px;
+    width: clamp(30px, 20%, 40px);
+}
+.vertical #soundBtn img {
+    top: initial;
+    bottom: 0px;
+}
+.vertical.complete-volume .controls #volRange {
+    position: absolute;
+    width: 50px;
+    left: -7px;
+    top: initial;
+    bottom: 60px;
+    transform: rotate(270deg);
+}
+
+/* 
+    ACTIONS
+*/
+.display-0 {
+    display: none;
+}

@@ -1,0 +1,12 @@
+{
+    "content": {
+      "video": {
+        "muted_icon": "./src/img/video_icons/muted-icon.png",
+        "pause_icon": "./src/img/video_icons/pause-icon.png",
+        "play_icon": "./src/img/video_icons/play-icon.png",
+        "replay_icon": "./src/img/video_icons/replay-icon.png",
+        "volume_down_icon": "./src/img/video_icons/volume-down-icon.png",
+        "volume_up_icon": "./src/img/video_icons/volume-up-icon.png"
+      }
+    }
+  }
