@@ -265,8 +265,7 @@ export default class Video {
                                     </div>
                                     ${
                                     (() => {
-                                        // if(completeVolume) {
-                                        if(true) {
+                                        if(completeVolume) {
                                             return `
                                                 <input type="range"
                                                     name="volumeRange"
