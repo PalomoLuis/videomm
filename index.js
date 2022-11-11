@@ -6,9 +6,10 @@ export default class Video {
      * @type {Object} The container where you want to add the controls UI.
      * @type {Object} The configuration for icon assets. 
      * @type {{completeVolume, initialVolume, vertical}} (optional) The video configuration: { completeVolume, initialVolume, vertial }. 
+     * @type {object} Gsap animation tool.
      */
 
-    constructor( mainPartentElement, controlsContainer, assetsConfig, videoConfig ) {
+    constructor( mainPartentElement, controlsContainer, assetsConfig, videoConfig, gsapTool = false) {
         if (assetsConfig) {
             if(typeof assetsConfig !== 'object') {
                 console.warn('Config param must be an object');
@@ -16,15 +17,9 @@ export default class Video {
             this.config = assetsConfig;
         } else {
             this.config = {
-                "content": {
-                  "video": {
-                    "muted_icon": "./src/img/video_icons/muted-icon.png",
-                    "pause_icon": "./src/img/video_icons/pause-icon.png",
-                    "play_icon": "./src/img/video_icons/play-icon.png",
-                    "replay_icon": "./src/img/video_icons/replay-icon.png",
-                    "volume_down_icon": "./src/img/video_icons/volume-down-icon.png",
-                    "volume_up_icon": "./src/img/video_icons/volume-up-icon.png"
-                  }
+                content: {
+                  icon_colors: "ffffff",
+                  local: true
                 }
               }
         }
@@ -45,10 +40,11 @@ export default class Video {
             replay_icon: 'replay-icon'
         };
 
-        if(typeof gsap === 'undefined') {
+        if(typeof gsapTool === 'undefined') {
             console.warn('Video controls use Gsap to work. Install Gsap on your files.')
         } else {
-            this.gsap = gsap;
+            let gsapDNS = typeof gsap !== 'undefined' ? gsap : false
+            this.gsap = gsapTool || gsapDNS;
         }
     };
 
@@ -195,7 +191,8 @@ export default class Video {
             muted_icon,
             volume_down_icon,
             volume_up_icon
-        } = this.config.content.video;
+        } = this.config.content.video || false;
+        const icon_colors = this.config.content.icon_colors;
         const { completeVolume, vertical } = this.videoConfig;
         let initialVolume
         if (completeVolume) {
@@ -204,32 +201,119 @@ export default class Video {
 
         let template = `
             <div class="controls">
-                <button id="playPauseBtn">
-                    <img src="${play_icon}" id="${this.variables.play_icon}"/>
-                    <img src="${pause_icon}" id="${this.variables.pause_icon}" class="${this.variables.display0}"/>
-                    <img src="${replay_icon}" id="${this.variables.replay_icon}" class="${this.variables.display0}"/>
-                </button>
-                <button id="soundBtn">
-                    <img src="${muted_icon}" id="mute-icon"/>
-                    <img src="${volume_down_icon}" id="volDown-icon" class="${this.variables.display0}"/>
-                    <img src="${volume_up_icon}" id="volUp-icon" class="${this.variables.display0}"/>
-                    ${
+                ${
                     (() => {
-                        if(completeVolume) {
+                        if(this.config.content.local){
                             return `
-                                <input type="range"
-                                    name="volumeRange"
-                                    id="volRange"
-                                    min="0" max="100"
-                                    value="${initialVolume}"
-                                >
-                                <div id="mute_2"></div>
-                                `
+                                <button id="playPauseBtn">
+                                    <div id="${this.variables.play_icon}">
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                            <rect width="36" height="36" fill="#a9a8a9" opacity="0"/>
+                                            <polygon fill="#${icon_colors}" points="22.91 18 15.09 11.74 15.09 24.26 22.91 18"/>
+                                        </svg>
+                                    </div>
+                                    <div id="${this.variables.pause_icon}" class="${this.variables.display0}">
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                        <rect width="36" height="36" fill="#a9a8a9" opacity="0"/>
+                                        <g>
+                                            <rect fill="#${icon_colors}" x="13.36" y="12.28" width="3.19" height="11.43"/>
+                                            <rect fill="#${icon_colors}" x="19.45" y="12.28" width="3.19" height="11.43"/>
+                                        </g>
+                                        </svg>
+                                    </div>
+                                    <div id="${this.variables.replay_icon}" class="${this.variables.display0}">
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                            <rect width="36" height="36" fill="#a9a8a9" opacity="0"/>
+                                            <path fill="#${icon_colors}" d="M25.15,12.98l-4.47-.78,.78,4.47,1.34-1.34c.44,.79,.69,1.7,.69,2.66,0,3.03-2.46,5.49-5.49,5.49s-5.49-2.46-5.49-5.49,2.46-5.49,5.49-5.49v-1.66c-3.95,0-7.15,3.2-7.15,7.15s3.2,7.15,7.15,7.15,7.15-3.2,7.15-7.15c0-1.43-.42-2.76-1.14-3.87l1.14-1.14Z"/>
+                                        </svg>
+                                    </div>
+                                </button>
+                                <button id="soundBtn">
+                                    <div id="mute-icon">
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                        <rect width="36" height="36" fill="#a9a8a9" opacity="0"/>
+                                        <g>
+                                            <polygon fill="#${icon_colors}" points="13.94 15.17 11.76 15.17 11.76 20.94 14.06 20.94 17.79 24.43 17.79 11.57 13.94 15.17"/>
+                                            <polygon fill="#${icon_colors}" points="24.33 16.5 23.38 15.55 21.88 17.06 20.38 15.55 19.43 16.5 20.94 18 19.43 19.5 20.38 20.45 21.88 18.94 23.38 20.45 24.33 19.5 22.82 18 24.33 16.5"/>
+                                        </g>
+                                        </svg>
+                                    </div>
+                                    <div id="volDown-icon" class="${this.variables.display0}">
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                        <rect width="36" height="36" fill="#a9a8a9" opacity="0"/>
+                                        <g>
+                                            <path fill="#ffffff" d="M19,18c0-1-.47-1.88-1.21-2.44v-3.99l-3.85,3.61h-2.18v5.76h2.3l3.73,3.49v-3.99c.73-.56,1.21-1.45,1.21-2.44Z"/>
+                                            <path fill="#ffffff" d="M19.97,13.94l-1.06,1.06c.77,.77,1.24,1.83,1.24,2.99s-.47,2.23-1.24,2.99l1.06,1.06c1.04-1.04,1.68-2.47,1.68-4.06s-.64-3.02-1.68-4.06Z"/>
+                                        </g>
+                                        </svg>
+                                    </div>
+                                    <div id="volUp-icon" class="${this.variables.display0}">
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                        <rect width="36" height="36" fill="#a9a8a9" opacity="0"/>
+                                        <g>
+                                            <path fill="#ffffff" d="M19,18c0-.99-.48-1.87-1.21-2.43v-4l-3.85,3.61h-2.18v5.76h2.3l3.73,3.49v-4c.73-.56,1.21-1.44,1.21-2.43Z"/>
+                                            <path fill="#ffffff" d="M19.97,13.94l-1.06,1.06c.77,.77,1.24,1.83,1.24,2.99s-.47,2.23-1.24,2.99l1.06,1.06c1.04-1.04,1.68-2.47,1.68-4.06s-.64-3.02-1.68-4.06Z"/>
+                                            <path fill="#ffffff" d="M21.8,12.11l-1.07,1.07c1.23,1.23,1.99,2.93,1.99,4.82s-.76,3.58-1.99,4.82l1.07,1.07c1.51-1.51,2.44-3.59,2.44-5.89s-.93-4.38-2.44-5.89Z"/>
+                                        </g>
+                                        </svg>
+                                    </div>
+                                    ${
+                                    (() => {
+                                        // if(completeVolume) {
+                                        if(true) {
+                                            return `
+                                                <input type="range"
+                                                    name="volumeRange"
+                                                    id="volRange"
+                                                    min="0" max="100"
+                                                    value="${initialVolume}"
+                                                >
+                                                <div id="mute_2"></div>
+                                                `
+                                        }
+                                        return ""
+                                    })()
+                                    }
+                                </button>
+                            `;
+                        } else {
+                            return `
+                                <button id="playPauseBtn">
+                                    <img src="${play_icon}" id="${this.variables.play_icon}"/>
+                                    <img src="${pause_icon}" id="${this.variables.pause_icon}" class="${this.variables.display0}"/>
+                                    <img src="${replay_icon}" id="${this.variables.replay_icon}" class="${this.variables.display0}"/>
+                                </button>
+                                <button id="soundBtn">
+                                    <img src="${muted_icon}" id="mute-icon"/>
+                                    <img src="${volume_down_icon}" id="volDown-icon" class="${this.variables.display0}"/>
+                                    <img src="${volume_up_icon}" id="volUp-icon" class="${this.variables.display0}"/>
+                                    ${
+                                    (() => {
+                                        if(completeVolume) {
+                                            return `
+                                                <input type="range"
+                                                    name="volumeRange"
+                                                    id="volRange"
+                                                    min="0" max="100"
+                                                    value="${initialVolume}"
+                                                >
+                                                <div id="mute_2"></div>
+                                                `
+                                        }
+                                        return ""
+                                    })()
+                                    }
+                                </button>
+                            `;
                         }
-                        return ""
                     })()
-                    }
-                </button>
+                }
             </div>
         `;
         if(completeVolume) {

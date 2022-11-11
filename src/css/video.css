@@ -43,7 +43,9 @@
     left: var(--icon-size);
 }
 #playPauseBtn img,
-#soundBtn img {
+#playPauseBtn div svg,
+#soundBtn img,
+#soundBtn div svg {
     position: absolute;
     top: 0;
     left: 0;

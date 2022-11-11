@@ -60,7 +60,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
     <script type="module">
         'use strict';
-        import Video from './Video.js';
+        import Video from './index.js';
 
         const urlLocation = './src/data/data.json';
 
@@ -96,6 +96,7 @@
             let { banner, cont, videoConfig } = videoSettings;
             let fetchData = await data(urlLocation);
             showMessage(fetchData);
+            // const videoUi = new Video(banner, cont, false, videoConfig)
             const videoUi = new Video(banner, cont, fetchData, videoConfig)
             videoUi.videoControls()
             
