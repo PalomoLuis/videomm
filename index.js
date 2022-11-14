@@ -352,10 +352,10 @@ export default class Video {
     };
 
     // Methods
-    mouseOver = () => {
+    showControls = () => {
         this.gsap.to('.controls', 0.3, { opacity: 1 });
     }
-    mouseOut = () => {
+    hideControls = () => {
         this.gsap.to('.controls', 0.3, { opacity: 0 });
     }
     /**

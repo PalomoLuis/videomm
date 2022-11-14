@@ -106,14 +106,14 @@
 
             //Controls hidden
             banner.addEventListener('videoPlaying', () => {
-                banner.addEventListener('mouseover', videoUi.mouseOver);
-                banner.addEventListener('mouseout', videoUi.mouseOut);
+                banner.addEventListener('mouseover', videoUi.showControls);
+                banner.addEventListener('mouseout', videoUi.hideControls);
                 tl.progress(0)
                 tl.play()
             })
             banner.addEventListener('videoEnded', () => {
-                banner.removeEventListener('mouseover', videoUi.mouseOver);
-                banner.removeEventListener('mouseout', videoUi.mouseOut);
+                banner.removeEventListener('mouseover', videoUi.showControls);
+                banner.removeEventListener('mouseout', videoUi.hideControls);
                 gsap.to('.controls', { duration: 1, opacity: 1 })
             })
             //Animation on specific time

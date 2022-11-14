@@ -1,28 +1,28 @@
 :root {
-    --icon-size: 36px;
-    --height: 250px;
-    --width: 300px;
-    --bg-gradient: linear-gradient(0deg, rgba(0,0,0,70) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0) 100%);
-    --color-black: #000000;
-    --color-gray: #707070;
-    --color-white: #ffffff;
+    --videomm-icon-size: 36px;
+    --videomm-height: 250px;
+    --videomm-width: 300px;
+    --videomm-bg-gradient: linear-gradient(0deg, rgba(0,0,0,70) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0) 100%);
+    --videomm-color-black: #000000;
+    --videomm-color-gray: #707070;
+    --videomm-color-white: #ffffff;
 }
 #video {
     position: absolute;
     top: 0;
     left: 0;
-    width: var(--width);
-    height: var(--height);
+    width: var(--videomm-width);
+    height: var(--videomm-height);
 }
 
 .controls {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: var(--width);
-    height: var(--icon-size);
+    width: var(--videomm-width);
+    height: var(--videomm-icon-size);
     z-index: 99;
-    background: var(--bg-gradient);
+    background: var(--videomm-bg-gradient);
     /* opacity: 0; */
 }
 
@@ -31,8 +31,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: var(--icon-size);
-    height: var(--icon-size);
+    width: var(--videomm-icon-size);
+    height: var(--videomm-icon-size);
     margin: 0;
     background: transparent;
     border: none;
@@ -40,7 +40,7 @@
     cursor: pointer;
 }
 #soundBtn {
-    left: var(--icon-size);
+    left: var(--videomm-icon-size);
 }
 #playPauseBtn img,
 #playPauseBtn div svg,
@@ -49,7 +49,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: var(--icon-size);
+    width: var(--videomm-icon-size);
 }
 
 /*
@@ -64,7 +64,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: calc(var(--icon-size) + 4px);
+    left: calc(var(--videomm-icon-size) + 4px);
     margin: 0;
 }
 .complete-volume input[type=range] {
@@ -78,46 +78,46 @@
     width: 100%;
     height: 5px;
     cursor: pointer;
-    background: var(--color-gray);
+    background: var(--videomm-color-gray);
     border-radius: 3px;
 }
 .complete-volume input[type=range]::-moz-range-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
-    box-shadow: 0px 0px 0px var(--color-black);
-    background: var(--color-gray);
+    box-shadow: 0px 0px 0px var(--videomm-color-black);
+    background: var(--videomm-color-gray);
     border-radius: 3px;
-    border: 0px solid var(--color-black);
+    border: 0px solid var(--videomm-color-black);
 }
 .complete-volume input[type=range]::-moz-range-thumb {
-    box-shadow: 0px 0px 0px var(--color-black);
-    border: 0px solid var(--color-black);
+    box-shadow: 0px 0px 0px var(--videomm-color-black);
+    border: 0px solid var(--videomm-color-black);
     height: 14px;
     width: 14px;
     border-radius: 7px;
-    background: var(--color-white);
+    background: var(--videomm-color-white);
     cursor: pointer;
 }
 .complete-volume input[type=range]:focus::-ms-fill-lower {
-    background: var(--color-gray);
+    background: var(--videomm-color-gray);
 }
 .complete-volume input[type=range]:focus::-ms-fill-upper {
-    background: var(--color-gray);
+    background: var(--videomm-color-gray);
 }
 .complete-volume input[type=range]::-webkit-slider-thumb {
     height: 14px;
     width: 14px;
     border-radius: 7px;
-    background: var(--color-white);
+    background: var(--videomm-color-white);
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -5px;
 }
 .complete-volume #mute_2 {
     position: absolute;
-    width: var(--icon-size);
-    height: var(--icon-size);
+    width: var(--videomm-icon-size);
+    height: var(--videomm-icon-size);
     bottom: 0;
     left: 0;
     cursor: pointer;
