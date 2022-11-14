@@ -96,8 +96,7 @@
             let { banner, cont, videoConfig } = videoSettings;
             let fetchData = await data(urlLocation);
             showMessage(fetchData);
-            // const videoUi = new Video(banner, cont, false, videoConfig)
-            const videoUi = new Video(banner, cont, fetchData, videoConfig)
+            const videoUi = new Video(banner, cont, videoConfig, false, fetchData)
             videoUi.videoControls()
             
             

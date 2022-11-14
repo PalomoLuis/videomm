@@ -4,13 +4,13 @@ export default class Video {
      * 
      * @type {Object} The main document element after body. 
      * @type {Object} The container where you want to add the controls UI.
-     * @type {Object} The configuration for icon assets. 
      * @type {{completeVolume, initialVolume, vertical}} (optional) The video configuration: { completeVolume, initialVolume, vertial }. 
      * @type {object} Gsap animation tool.
+     * @type {Object} The configuration for icon assets. 
      */
 
-    constructor( mainPartentElement, controlsContainer, assetsConfig, videoConfig, gsapTool = false) {
-        if (assetsConfig) {
+    constructor( mainPartentElement, controlsContainer, videoConfig, gsapTool = false, assetsConfig) {
+        if (!!assetsConfig) {
             if(typeof assetsConfig !== 'object') {
                 console.warn('Config param must be an object');
             }
@@ -184,6 +184,7 @@ export default class Video {
     };
 
     createTemplate = () => {
+        // Paramerets added by user
         const {
             play_icon,
             pause_icon,
@@ -192,12 +193,17 @@ export default class Video {
             volume_down_icon,
             volume_up_icon
         } = this.config.content.video || false;
-        const icon_colors = this.config.content.icon_colors;
+
         const { completeVolume, vertical } = this.videoConfig;
+
         let initialVolume
         if (completeVolume) {
             initialVolume = this.videoConfig.initialVolume ? this.videoConfig.initialVolume : 60
         }
+
+        //Parameter add by default
+        const icon_colors = this.config.content.icon_colors;
+        
 
         let template = `
             <div class="controls">
@@ -292,22 +298,7 @@ export default class Video {
                                     <img src="${muted_icon}" id="mute-icon"/>
                                     <img src="${volume_down_icon}" id="volDown-icon" class="${this.variables.display0}"/>
                                     <img src="${volume_up_icon}" id="volUp-icon" class="${this.variables.display0}"/>
-                                    ${
-                                    (() => {
-                                        if(completeVolume) {
-                                            return `
-                                                <input type="range"
-                                                    name="volumeRange"
-                                                    id="volRange"
-                                                    min="0" max="100"
-                                                    value="${initialVolume}"
-                                                >
-                                                <div id="mute_2"></div>
-                                                `
-                                        }
-                                        return ""
-                                    })()
-                                    }
+                                    ${ this.createInput(completeVolume, initialVolume) }
                                 </button>
                             `;
                         }
@@ -320,6 +311,23 @@ export default class Video {
         }
         this.content.innerHTML += template;
     };
+
+    createInput(completeVolume, initialVolume) {
+        const complete = completeVolume;
+        const initial = initialVolume;
+        if(complete) {
+            return `
+                <input type="range"
+                    name="volumeRange"
+                    id="volRange"
+                    min="0" max="100"
+                    value="${initial}"
+                >
+                <div id="mute_2"></div>
+                `
+        }
+        return ""
+    }
 
     videoStyling = () => {
         this.body.classList.add('video');

@@ -135,7 +135,8 @@
     height: 110px;
     width: clamp(30px, 20%, 40px);
 }
-.vertical #soundBtn img {
+.vertical #soundBtn img,
+.vertical #soundBtn svg {
     top: initial;
     bottom: 0px;
 }
