@@ -81,61 +81,78 @@ export default class Video {
 
         
         // Video Volume Controls
-        if(!this.videoConfig.completeVolume || this.videoConfig.completeVolume === undefined) {
-            // Simple video volume
-            this.soundBtn.addEventListener('click', this.mute);
+        if(this.videoConfig) {
+            if(!this.videoConfig.completeVolume || this.videoConfig.completeVolume === undefined) {
+                // Simple video volume
+                this.soundBtn.addEventListener('click', this.mute);
+            } else {
+                // Complete video volume
+                this.body.classList.add('complete-volume');
+                this.volRange = document.getElementById('volRange');
+                this.volume = this.volRange.value / 100;
+                this.mute2 = document.getElementById('mute_2');
+                this.soundBtn.addEventListener('mouseover', () => {
+                    this.gsap.to(volRange, 0.4, { opacity: 1});
+                })
+                this.body.addEventListener('mouseout', (e) => {
+                    this.gsap.to(volRange, 0.4, { opacity: 0});
+                })
+                this.volRange.addEventListener('change', this.setVolume);
+                this.mute2.addEventListener('click', this.mute);
+            };
         } else {
-            // Complete video volume
-            this.body.classList.add('complete-volume');
-            this.volRange = document.getElementById('volRange');
-            this.volume = this.volRange.value / 100;
-            this.mute2 = document.getElementById('mute_2');
-            this.soundBtn.addEventListener('mouseover', () => {
-                this.gsap.to(volRange, 0.4, { opacity: 1});
-            })
-            this.body.addEventListener('mouseout', (e) => {
-                this.gsap.to(volRange, 0.4, { opacity: 0});
-            })
-            this.volRange.addEventListener('change', this.setVolume);
-            this.mute2.addEventListener('click', this.mute);
-        };
+            this.soundBtn.addEventListener('click', this.mute);
+        }
 
         // Video events
         this.videoEvents();
     };
 
     mute = () => {
-        if (!this.videoConfig.completeVolume) {
-            // Simple volume settings
-            if(this.video.muted) {
-            this.video.muted = false;
-            this.volMute.classList.add(this.variables.display0);
-            this.volUp.classList.remove(this.variables.display0);
+        if(this.videoConfig) {
+            if (!this.videoConfig.completeVolume) {
+                // Simple volume settings
+                if(this.video.muted) {
+                this.video.muted = false;
+                this.volMute.classList.add(this.variables.display0);
+                this.volUp.classList.remove(this.variables.display0);
+                } else {
+                this.video.muted = true;
+                this.volMute.classList.remove(this.variables.display0);
+                this.volUp.classList.add(this.variables.display0);
+                }
             } else {
-            this.video.muted = true;
-            this.volMute.classList.remove(this.variables.display0);
-            this.volUp.classList.add(this.variables.display0);
+                // Complete volume settings
+                if (this.video.muted) {
+                this.video.muted = false;
+                if (this.video.volume < 0.4) {
+                    this.volMute.classList.add(this.variables.display0);
+                    this.volDown.classList.remove(this.variables.display0);
+                    this.volUp.classList.add(this.variables.display0);
+                } else {
+                    this.volMute.classList.add(this.variables.display0);
+                    this.volDown.classList.add(this.variables.display0);
+                    this.volUp.classList.remove(this.variables.display0);
+                }
+                this.volRange.value = this.volume * 100;
+                this.video.volume = this.volume;
+                } else {
+                    this.video.muted = true;
+                    this.volRange.value = 0;
+                    this.volMute.classList.remove(this.variables.display0);
+                    this.volDown.classList.add(this.variables.display0);
+                    this.volUp.classList.add(this.variables.display0);
+                }
             }
         } else {
-            // Complete volume settings
-            if (this.video.muted) {
-            this.video.muted = false;
-            if (this.video.volume < 0.4) {
+            // Simple volume settings
+            if(this.video.muted) {
+                this.video.muted = false;
                 this.volMute.classList.add(this.variables.display0);
-                this.volDown.classList.remove(this.variables.display0);
-                this.volUp.classList.add(this.variables.display0);
-            } else {
-                this.volMute.classList.add(this.variables.display0);
-                this.volDown.classList.add(this.variables.display0);
                 this.volUp.classList.remove(this.variables.display0);
-            }
-            this.volRange.value = this.volume * 100;
-            this.video.volume = this.volume;
             } else {
                 this.video.muted = true;
-                this.volRange.value = 0;
                 this.volMute.classList.remove(this.variables.display0);
-                this.volDown.classList.add(this.variables.display0);
                 this.volUp.classList.add(this.variables.display0);
             }
         }
@@ -194,7 +211,7 @@ export default class Video {
             volume_up_icon
         } = this.config.content.video || false;
 
-        const { completeVolume, vertical } = this.videoConfig;
+        const { completeVolume, vertical } = this.videoConfig || false;
 
         let initialVolume
         if (completeVolume) {
@@ -331,8 +348,10 @@ export default class Video {
 
     videoStyling = () => {
         this.body.classList.add('video');
-        if(this.videoConfig.vertical) {
-            this.body.classList.add('vertical');
+        if(this.videoConfig) {
+            if(this.videoConfig.vertical) {
+                this.body.classList.add('vertical');
+            }
         }
     };
 
